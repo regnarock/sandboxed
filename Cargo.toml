@@ -56,6 +56,8 @@ rand = { version = "0.8.3" }
 winit = { version = "0.28", default-features = false }
 image = { version = "0.24", default-features = false }
 
+bytemuck = "1.14.0"
+
 [build-dependencies]
 embed-resource = "2.3.0"
 

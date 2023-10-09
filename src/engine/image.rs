@@ -3,7 +3,7 @@ use bevy::{
     render::{extract_resource::*, render_resource::*},
 };
 
-#[derive(Resource, Clone, Deref, ExtractResource)]
+#[derive(Resource, Clone, Deref, ExtractResource, Debug)]
 pub struct VoxelsRenderImage(pub Handle<Image>);
 
 impl VoxelsRenderImage {

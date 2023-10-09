@@ -1,16 +1,20 @@
+mod buffers;
 pub mod image;
 mod pipeline;
 
 use bevy::{
     diagnostic::*,
     prelude::*,
-    render::{extract_resource::ExtractResourcePlugin, Render, RenderApp, RenderSet, render_graph::RenderGraph},
+    render::{extract_resource::ExtractResourcePlugin, Render, RenderApp, RenderSet, render_graph::RenderGraph, renderer::RenderDevice},
     window::*,
 };
 
+use crate::{GameState, engine::buffers::VoxelPipelineBuffers};
+
 use self::{image::VoxelsRenderImage, pipeline::{VoxelShadersPipeline, VoxelSandboxNode}};
 
-const SIM_SIZE: (u32, u32) = (1280, 720);
+const SIM_SIZE: (u32, u32) = (800, 600);
+const SIM_VOXELS: usize = 800 * 600;
 const WORKGROUP_SIZE: u32 = 8;
 
 pub struct EnginePlugin;
@@ -48,7 +52,11 @@ fn window_fps(
     }
 }
 
-fn setup(mut commands: Commands, images: ResMut<Assets<Image>>) {
+fn setup(
+    mut commands: Commands,
+    images: ResMut<Assets<Image>>,
+    device: Res<RenderDevice>,
+) {
     let render_image_res = VoxelsRenderImage::new(SIM_SIZE.0, SIM_SIZE.1, images);
 
     commands.spawn(SpriteBundle {
@@ -60,5 +68,10 @@ fn setup(mut commands: Commands, images: ResMut<Assets<Image>>) {
         ..default()
     });
 
+    let buffers = VoxelPipelineBuffers::new(device);
+
+    debug!("[Resource inserted]{:?}", render_image_res);
     commands.insert_resource(render_image_res);
+    debug!("[Resource inserted]{:?}", buffers);
+    commands.insert_resource(buffers);
 }

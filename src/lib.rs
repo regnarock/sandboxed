@@ -5,13 +5,11 @@ mod audio;
 mod engine;
 mod loading;
 mod menu;
-mod player;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
 use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
-use crate::player::PlayerPlugin;
 
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
@@ -55,7 +53,6 @@ impl Plugin for GamePlugin {
                 MenuPlugin,
                 ActionsPlugin,
                 InternalAudioPlugin,
-                PlayerPlugin,
                 EnginePlugin,
                 ExtractResourcePlugin::<GameStateRes>::default(),
             ))
@@ -72,7 +69,7 @@ impl Plugin for GamePlugin {
         {
             app.add_plugins(LogPlugin {
                 level: bevy::log::Level::DEBUG,
-                filter: "debug,wgpu_core=warn,wgpu_hal=warn,sandboxed=debug".into(),
+                filter: "debug,wgpu_core=warn,wgpu_hal=warn,naga=warn,sandboxed=debug".into(),
             });
             app.add_plugins((FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin::default()));
         }
